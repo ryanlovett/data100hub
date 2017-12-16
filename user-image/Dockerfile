@@ -36,24 +36,24 @@ WORKDIR /home/jovyan
 
 USER jovyan
 
-CMD curl -o ${CONDA_DIR}/miniconda.sh \
+RUN curl -o /tmp/miniconda.sh \
 	https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh 
 
 # This is set to be in $HOME, not container storage.
 # Detritus could collect over time. 
-CMD bash ${CONDA_DIR}/miniconda.sh -b -u -p ${CONDA_DIR}
+RUN bash /tmp/miniconda.sh -b -u -p ${CONDA_DIR}
 
-CMD conda config --set always_yes yes --set changeps1 no
-CMD conda update -q conda
+RUN conda config --set always_yes yes --set changeps1 no
+RUN conda update -q conda
 
 # Useful for debugging any issues with conda
-CMD conda info -a
+RUN conda info -a
 
 # Encapsulate the environment info into its own yml file (which carries
 # the name `data100` in it
 COPY environment.yml /tmp/
-CMD conda env create -q -f /tmp/environment.yml
-CMD source activate data100
+RUN conda env create -q -f /tmp/environment.yml
+RUN source activate data100
 
 ADD ipython_config.py ${CONDA_DIR}/etc/ipython/ipython_config.py
 
