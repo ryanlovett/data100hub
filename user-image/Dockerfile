@@ -1,13 +1,32 @@
 FROM ubuntu:17.04
 
+ENV CONDA_DIR /srv/conda
+ENV PATH ${CONDA_DIR}/bin:$PATH
+
+RUN apt-get update && \
+	apt-get install --yes \
+		locales \
+		python3.6 \
+		python3.6-dev \
+		build-essential \
+		tar \
+		git \
+		curl \
+		wget \
+		vim \
+		# for nbconvert
+		pandoc \
+		texlive-xetex \
+		texlive-fonts-recommended \
+		texlive-generic-recommended \
+		;
+
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-ENV CONDA_DIR /srv/conda
-
 RUN echo "${LC_ALL} UTF-8" > /etc/locale.gen && \
-    locale-gen
+	locale-gen
 
 RUN adduser --disabled-password --gecos "Default Jupyter user" jovyan
 
@@ -22,9 +41,7 @@ CMD curl -o ${CONDA_DIR}/miniconda.sh \
 
 # This is set to be in $HOME, not container storage.
 # Detritus could collect over time. 
-CMD bash ${CONDA_DIR}/miniconda.sh -b -p ${CONDA_DIR}
-
-ENV PATH ${CONDA_DIR}/bin:$PATH
+CMD bash ${CONDA_DIR}/miniconda.sh -b -u -p ${CONDA_DIR}
 
 CMD conda config --set always_yes yes --set changeps1 no
 CMD conda update -q conda
@@ -34,8 +51,8 @@ CMD conda info -a
 
 # Encapsulate the environment info into its own yml file (which carries
 # the name `data100` in it
-ADD environment.yml ${CONDA_DIR}
-CMD conda env create -q -f ${CONDA_DIR}/environment.yml
+COPY environment.yml /tmp/
+CMD conda env create -q -f /tmp/environment.yml
 CMD source activate data100
 
 ADD ipython_config.py ${CONDA_DIR}/etc/ipython/ipython_config.py
