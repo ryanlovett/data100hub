@@ -53,7 +53,9 @@ RUN conda info -a
 # the name `data100` in it
 COPY environment.yml /tmp/
 RUN conda env create -q -f /tmp/environment.yml
-RUN [ "/bin/bash", "-c", "source activate data100"]
+
+#RUN [ "/bin/bash", "-c", "source activate data100"]
+ENV PATH ${CONDA_DIR}/envs/data100/bin:$PATH
 
 ADD ipython_config.py ${CONDA_DIR}/etc/ipython/ipython_config.py
 
