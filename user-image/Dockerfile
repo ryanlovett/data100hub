@@ -45,9 +45,6 @@ RUN bash /tmp/miniconda.sh -b -u -p ${CONDA_PREFIX}
 RUN conda config --set always_yes yes --set changeps1 no
 RUN conda update -q conda
 
-# Useful for debugging any issues with conda
-RUN conda info -a
-
 # Encapsulate the environment info into its own yml file (which carries
 # the name `data100` in it
 COPY environment.yml /tmp/
@@ -57,6 +54,7 @@ RUN conda env create -q -f /tmp/environment.yml
 # environment won't be preserved here.
 ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 
-# ADD ipython_config.py ${CONDA_PREFIX}/etc/ipython/ipython_config.py
+# Useful for debugging any issues with conda
+RUN conda info -a
 
 EXPOSE 8888
