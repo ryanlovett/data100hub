@@ -1,7 +1,7 @@
 FROM ubuntu:17.04
 
-ENV CONDA_DIR /srv/conda
-ENV PATH ${CONDA_DIR}/bin:$PATH
+ENV CONDA_PREFIX /srv/conda
+ENV PATH ${CONDA_PREFIX}/bin:$PATH
 
 RUN apt-get update && \
 	apt-get install --yes \
@@ -30,7 +30,7 @@ RUN echo "${LC_ALL} UTF-8" > /etc/locale.gen && \
 
 RUN adduser --disabled-password --gecos "Default Jupyter user" jovyan
 
-RUN install -d -o jovyan -g jovyan ${CONDA_DIR}
+RUN install -d -o jovyan -g jovyan ${CONDA_PREFIX}
 
 WORKDIR /home/jovyan
 
@@ -39,9 +39,8 @@ USER jovyan
 RUN curl -o /tmp/miniconda.sh \
 	https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh 
 
-# This is set to be in $HOME, not container storage.
-# Detritus could collect over time. 
-RUN bash /tmp/miniconda.sh -b -u -p ${CONDA_DIR}
+# Install miniconda
+RUN bash /tmp/miniconda.sh -b -u -p ${CONDA_PREFIX}
 
 RUN conda config --set always_yes yes --set changeps1 no
 RUN conda update -q conda
@@ -54,9 +53,10 @@ RUN conda info -a
 COPY environment.yml /tmp/
 RUN conda env create -q -f /tmp/environment.yml
 
-#RUN [ "/bin/bash", "-c", "source activate data100"]
-ENV PATH ${CONDA_DIR}/envs/data100/bin:$PATH
+# We modify the path directly since the `source activate data100`
+# environment won't be preserved here.
+ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 
-ADD ipython_config.py ${CONDA_DIR}/etc/ipython/ipython_config.py
+# ADD ipython_config.py ${CONDA_PREFIX}/etc/ipython/ipython_config.py
 
 EXPOSE 8888
