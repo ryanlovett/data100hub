@@ -1,0 +1,40 @@
+sudo: required
+language: python
+services:
+- docker
+python:
+- 3.6
+
+before_install:
+  - "./travis/az-repo.bash"
+  - "./travis/install-git-crypt.bash"
+  - "./travis/install-helm.bash"
+  - sudo apt-get install jq
+
+install:
+  - pip install --no-cache-dir pyyaml
+
+script:
+- "./travis/travis-script.bash build"
+
+branches:
+  only:
+    - staging
+    - prod
+
+deploy:
+  provider: script
+  script: ./travis/travis-script.bash deploy
+  on:
+    branch:
+      - staging
+      - prod
+
+env:
+  global:
+    - AZ_LOCATION: "centralus"
+    - CLUSTER_ADMIN: "datahub"
+    - HUB_COURSE: "data100"
+    - SUBSCRIPTION_PREFIX: "data100-18sp"
+    - secure: "BQsb1Re14Rfc0tzg49ProLQ9egr6yCeu8VfLLha0iB2DRiA9kkOeOqko4WfcPMyqtCrBiwISMGEidSsGVb5Qpp2opFevDnfYf9gy3CRaluz85BWZWNJd/k2OR0BLXkh2GY0FXNQsUP3Ht10D5kMbOw1jHu78t8RnVONJcTkrXOIG/TtVImqlMz2mih33eMZSWt5FI+1fxw3I4+koAMwBIK/AXo2EQR4tuCszI1dlfgaC2CF392vGjSr9yWayPjyqmaWgoJVL0zQ8cskDVUAlNVJwm3dgKQsIuQWB+DpXfLwMV/n5gJoxnm7LzfYtsv+AQDNUlPDibq9FFoIA+zs3/tsb6X1jiLp78k7oYv1O7y29btLq4vL5Ps6LNq/sRHWLVd45aoPO+AkJd1TWOCUOQCpN36Ndpe67Jgwl4iQczltwcg/ybxa7Zh/WOKdaZ6JCLz18roDUyxIgAmBZcIITb0FUiqGAIpTN0N3ulDgYq8jlnqOlSq/NBvVqqCD9qAz9wd2zrcekexhaJYIBEyApGq2IT9ckmP5CDN8PsfwRcBSdUpgi+72VtSNaQAVKtQPW80agSAwUmpN9NyrY+3enu/EPd5u1KX7kd9S2FwbZ+R28MDf/IdIvok3hVWURU5Ti2RNYXvLWh+Gt0MhsAVgrzsTwBdDqvafbSjIOh0B51xU="
+    - secure: "sq11+MNM+Ry37JBeXznQLlDNb1EghlBzFSWFL89EK0+FKvLT6Q9uwIk9Jq0JRNoFf2Bj/Nk1DAmu7dOCSYy8ZPLStz+tBnwDe4Sbf4te4i358kyKbL/CiC7HtzlfQNHlOYHUqrcg/BU6I7HPJ7E/0YgyqDTHU9DBgKdZVO5txdN8UOTxc6BkoO4auJB4YKqC/Duv2S2UwxJ+n8UdxPW1um0NTF4NFwL4EjsruUtp4fC7HEuzAz1JCTMRO0h4vRsRaptMqxcsvowBwWMbEFpk4lrPziwfrQAdh2WJ2QcxPpCBVzEPv/4tgkfl5NhUFYoJeUK2mDff+jXLqtGOrvte+5C9+dfYHr4jLHjKgUrndvJH45FBIW1bnan0+0xgj6did44n6oyI5w7nMrFIgOt6XERcMsonEOY4MEMtallJOQP+NbWGjqY+o2CG5O3Zi4Exb5K5nXF9DSx9eWiaFM1BQw/1JK48Pv5j4KCnR7LH1knx1y2GT5k48SE0pt9+Qu/ra2tak1qnJ5aJGGVlQXKwYSyVwUP+qrLo4vWjb2l7dLpNVtzez/Q4Ay2vaU/Anao5mMaMP0yNMqNkmeQIS8O5B/GKQ0NX7/UZQJPAZcB03+U5UPBylf3bcHUYotEyzEe6OvuK1d8EpMy3zsYGlmLzuKmKyoCwoAa3UJS+00QRLEw="
