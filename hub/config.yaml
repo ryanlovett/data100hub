@@ -57,7 +57,7 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
-    tag: "631ca60"
+    tag: "59f4027"
   storage:
     type: hostPath
     extraVolumes:
