@@ -7,7 +7,7 @@ prePuller:
   enabled: true
   image:
     name: ryanlovett/image-allnodes-puller
-    tag: c900e80
+    tag: 89ff19a
 
 hub:
   extraConfig: |
@@ -49,7 +49,7 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
-    tag: "59f4027"
+    tag: "c900e80"
   storage:
     type: hostPath
     extraVolumes:
