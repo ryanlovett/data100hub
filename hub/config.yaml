@@ -49,7 +49,6 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
-    tag: "c900e80"
   storage:
     type: hostPath
     extraVolumes:
