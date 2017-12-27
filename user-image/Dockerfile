@@ -54,6 +54,11 @@ RUN conda env create -q -f /tmp/environment.yml
 # environment won't be preserved here.
 ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 
+RUN pip install nbgrader==0.5.4
+RUN jupyter nbextension install --sys-prefix --py nbgrader
+RUN jupyter nbextension enable --sys-prefix --py nbgrader
+RUN jupyter serverextension enable --sys-prefix --py nbgrader
+
 # Useful for debugging any issues with conda
 RUN conda info -a
 
