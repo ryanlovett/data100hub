@@ -5,8 +5,10 @@ data100.datahub.berkeley.edu, as well as its single user image.
 
 ## Branches
 
-The `staging` branch always reflects the state of the [staging JupyterHub](http://data100-staging.datahub.berkeley.edu),
-and the `prod` branch reflects the state of the [production JupyterHub](http://data100.datahub.berkeley.edu).
+The `staging` branch always reflects the state of the
+[staging JupyterHub](http://data100-staging.datahub.berkeley.edu),
+and the `prod` branch reflects the state of the
+[production JupyterHub](http://data100.datahub.berkeley.edu).
 
 ## Procedure
 

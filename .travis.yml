@@ -8,6 +8,7 @@ python:
 before_install:
   - "./travis/az-repo.bash"
   - "./travis/install-git-crypt.bash"
+  - "./travis/install-kubectl.bash"
   - "./travis/install-helm.bash"
   - sudo apt-get install jq
 
