@@ -1,0 +1,68 @@
+version: "v0.5.0"
+
+rbac:
+  enabled: false
+
+prePuller:
+  enabled: true
+  image:
+    name: ryanlovett/image-allnodes-puller
+    tag: 0051f26
+
+hub:
+  extraConfig: |
+    from kubespawner import KubeSpawner
+    from tornado import gen
+    import yaml
+
+    class CustomKubeSpawner(KubeSpawner):
+      @gen.coroutine
+      def start(self):
+        with open('/etc/jupyterhub/config/custom.memory') as f:
+          custom_attr_lists = yaml.safe_load(f)
+          for attr, users in custom_attr_lists.items():
+            if self.user.name in users:
+              self.mem_limit = attr
+              self.mem_guarantee = attr
+              break
+
+        with open('/etc/jupyterhub/config/custom.image') as f:
+          custom_attr_lists = yaml.safe_load(f)
+          for attr, users in custom_attr_lists.items():
+            if self.user.name in users:
+              self.singleuser_image_spec = attr
+              break
+
+        return (yield super().start())
+    c.JupyterHub.spawner_class = CustomKubeSpawner
+
+cull:
+  enabled: true
+  timeout: 3600 # default
+
+auth:
+#  type: google
+  admin:
+    users:
+      # infrastructure
+      - rylo
+      - yuvipanda
+      # sp18 data100 Professors
+      - fernando.perez
+      # sp18 data100 GSIs
+
+singleuser:
+  memory:
+    guarantee: 2G
+    limit: 2G
+  image:
+    name: "berkeleydsep/singleuser-data100"
+  storage:
+    type: hostPath
+    extraVolumes:
+      - name: home
+        hostPath:
+          path: /data/homes/{username}
+    extraVolumeMounts:
+      - name: home
+        mountPath: /home/jovyan
