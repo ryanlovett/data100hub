@@ -7,7 +7,7 @@ prePuller:
   enabled: true
   image:
     name: ryanlovett/image-allnodes-puller
-    tag: 0051f26
+    tag: 89ff19a
 
 hub:
   extraConfig: |
