@@ -3,7 +3,7 @@ channels:
 - defaults
 dependencies:
 - attrs=17.3.0
-- bleach=2.1.1
+- bleach=2.1.2
 - chardet=3.0.4
 - coverage=4.4.2
 - cryptography=2.1.4
