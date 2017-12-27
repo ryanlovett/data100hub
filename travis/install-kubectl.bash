@@ -6,7 +6,7 @@ set -euo pipefail
 
 RELEASE=1.8.4
 URL="https://storage.googleapis.com/kubernetes-release/release/${RELEASE}/bin/linux/amd64/kubectl"
-DEST=/usr/local/bin/kubectl
 
-curl -L -o ${DEST} ${URL}
-chmod +x ${DEST}
+cd /tmp/
+curl -LO ${URL}
+sudo install -o root -g root -m 0775 /usr/local/bin/kubectl
