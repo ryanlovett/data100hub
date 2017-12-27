@@ -9,4 +9,4 @@ URL="https://storage.googleapis.com/kubernetes-release/release/${RELEASE}/bin/li
 
 cd /tmp/
 curl -LO ${URL}
-sudo install -o root -g root -m 0775 /usr/local/bin/kubectl
+sudo install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
