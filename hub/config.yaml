@@ -41,15 +41,7 @@ cull:
   timeout: 3600 # default
 
 auth:
-#  type: google
-  admin:
-    users:
-      # infrastructure
-      - rylo
-      - yuvipanda
-      # sp18 data100 Professors
-      - fernando.perez
-      # sp18 data100 GSIs
+  type: google
 
 singleuser:
   memory:
