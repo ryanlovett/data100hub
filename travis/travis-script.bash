@@ -43,6 +43,11 @@ function deploy {
     SSHKEY="${CHECKOUT_DIR}/hub/secrets/id_${TRAVIS_BRANCH}"
     KUBECONFIG="${CHECKOUT_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
 
+	SP="${CHECKOUT_DIR}/hub/secrets/sp.json"
+	SP_NAME=$(jq -r .name ${SP})
+	SP_PASS=$(jq -r .password ${SP})
+	SP_TENANT=$(jq -r .tenant ${SP})
+
 	# Encrypted variables are only set when we are not a PR
 	# https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions
 	echo "Fetching git-crypt key..."
@@ -55,6 +60,7 @@ function deploy {
 
 	git-crypt unlock git-crypt.key
 
+	az login --service-principal -u ${SP_NAME} -p ${SP_PASS} --tenant ${SP_TENANT}
 	az account set -s ${SUBSCRIPTION_PREFIX}-${TRAVIS_BRANCH}
 
 	echo ./deploy.py deploy ${TRAVIS_BRANCH}
