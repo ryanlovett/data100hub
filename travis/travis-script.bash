@@ -16,11 +16,11 @@ set -euo pipefail
 # - encrypted_56228062df6f_iv  (created by 'travis encrypt-file')
 
 function prepare_azure {
-    SP="${CHECKOUT_DIR}/hub/secrets/sp-${TRAVIS_BRANCH}.json"
+    SP="${TRAVIS_BUILD_DIR}/hub/secrets/sp-${TRAVIS_BRANCH}.json"
     if [ ! -f ${SP} ]; then
 		echo "Could not find service principal file: ${SP}"
-		echo find ${CHECKOUT_DIR}
-		find ${CHECKOUT_DIR}
+		echo find ${TRAVIS_BUILD_DIR}
+		find ${TRAVIS_BUILD_DIR}
 		exit 1
 	fi
 
@@ -52,12 +52,7 @@ function build {
 function deploy {
     echo "Starting deploy..."
     REPO="https://github.com/${TRAVIS_REPO_SLUG}"
-    CHECKOUT_DIR="/tmp/${TRAVIS_BUILD_NUMBER}"
     COMMIT="${TRAVIS_COMMIT}"
-
-    # we are on azure
-    export KUBECONFIG="${CHECKOUT_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
-    prepare_azure
 
     # Encrypted variables are only set when we are not a PR
     # https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions
@@ -70,6 +65,10 @@ function deploy {
     chmod 0400 git-crypt.key
 
     git-crypt unlock git-crypt.key
+
+    # we are on azure
+    export KUBECONFIG="${TRAVIS_BUILD_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
+    prepare_azure
 
     echo ./deploy.py deploy ${TRAVIS_BRANCH}
     ./deploy.py deploy ${TRAVIS_BRANCH}
