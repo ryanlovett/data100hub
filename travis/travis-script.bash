@@ -27,8 +27,8 @@ function prepare_azure {
     az login --service-principal \
               -u $(jq -r .name     ${SP}) \
               -p $(jq -r .password ${SP}) \
-        --tenant $(jq -r .tenant   ${SP})
-    az account set -s ${SUBSCRIPTION_PREFIX}-${TRAVIS_BRANCH}
+        --tenant $(jq -r .tenant   ${SP}) > /dev/null
+    az account set -s ${SUBSCRIPTION_PREFIX}-${TRAVIS_BRANCH} > /dev/null
 }
 
 function build {
