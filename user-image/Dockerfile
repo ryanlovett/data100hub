@@ -61,6 +61,8 @@ RUN jupyter nbextension install --sys-prefix --py nbgrader
 RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
+RUN pip install jupyterlab==0.31.0rc1
+
 # Useful for debugging any issues with conda
 RUN conda info -a
 
