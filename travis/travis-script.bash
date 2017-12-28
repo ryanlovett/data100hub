@@ -14,7 +14,15 @@ set -euo pipefail
 # - encrypted_56228062df6f_key (created by 'travis encrypt-file')
 # - encrypted_56228062df6f_iv  (created by 'travis encrypt-file')
 
-CLUSTER="${HUB_COURSE}-${TRAVIS_BRANCH}"
+function prepare_azure {
+	SP="${CHECKOUT_DIR}/hub/secrets/sp-${TRAVIS_BRANCH}.json"
+
+	az login --service-principal \
+		      -u $(jq -r .name     ${SP}) \
+		      -p $(jq -r .password ${SP}) \
+		--tenant $(jq -r .tenant   ${SP})
+	az account set -s ${SUBSCRIPTION_PREFIX}-${TRAVIS_BRANCH}
+}
 
 function build {
 	echo "Starting build..."
@@ -39,9 +47,10 @@ function deploy {
 	REPO="https://github.com/${TRAVIS_REPO_SLUG}"
     CHECKOUT_DIR="/tmp/${TRAVIS_BUILD_NUMBER}"
     COMMIT="${TRAVIS_COMMIT}"
-	MASTER_HOST="${HUB_COURSE}-${TRAVIS_BRANCH}.${AZ_LOCATION}.cloudapp.azure.com"
-    SSHKEY="${CHECKOUT_DIR}/hub/secrets/id_${TRAVIS_BRANCH}"
-    KUBECONFIG="${CHECKOUT_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
+
+	# we are on azure
+    export KUBECONFIG="${CHECKOUT_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
+	prepare_azure
 
 	# Encrypted variables are only set when we are not a PR
 	# https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions
@@ -54,8 +63,6 @@ function deploy {
 	chmod 0400 git-crypt.key
 
 	git-crypt unlock git-crypt.key
-
-	az account set -s ${SUBSCRIPTION_PREFIX}-${TRAVIS_BRANCH}
 
 	echo ./deploy.py deploy ${TRAVIS_BRANCH}
 	./deploy.py deploy ${TRAVIS_BRANCH}
