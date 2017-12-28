@@ -90,6 +90,7 @@ def deploy(release):
         '--version', config['version'],
         '-f', 'hub/config.yaml',
         '-f', os.path.join('hub', 'secrets', release + '.yaml'),
+        '--timeout', '3600',
         '--set', 'singleuser.image.tag={}'.format(singleuser_tag)
     )
 
