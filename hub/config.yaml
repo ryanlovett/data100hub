@@ -55,6 +55,11 @@ singleuser:
       - name: home
         hostPath:
           path: /data/homes/{username}
+      - name: nbgrader
+        hostPath:
+          path: /data/homes/_nbgrader
     extraVolumeMounts:
       - name: home
         mountPath: /home/jovyan
+      - name: nbgrader
+        mountPath: /srv/nbgrader
