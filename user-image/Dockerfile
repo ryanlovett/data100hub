@@ -59,6 +59,7 @@ RUN pip install jupyterhub==0.8.1
 RUN pip install nbgrader==0.5.4
 RUN jupyter nbextension install --sys-prefix --py nbgrader
 RUN jupyter nbextension enable --sys-prefix --py nbgrader
+RUN jupyter nbextension enable --sys-prefix  create_assignment/main
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
 RUN pip install jupyterlab==0.31.0rc1
