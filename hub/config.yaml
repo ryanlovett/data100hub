@@ -52,7 +52,7 @@ singleuser:
   lifecycleHooks:
     postStart:
       exec:
-        command: ["/bin/sh", "-c", "test -f $HOME/.nbgrader_config.py.lck || cp -p /srv/nbgrader/nbgrader_config.py $HOME/.nbgrader_config.py"]
+        command: ["/bin/sh", "-c", "test -f $HOME/.jupyter/nbgrader_config.py.lck || cp -p /srv/nbgrader/nbgrader_config.py $HOME/.jupyter/nbgrader_config.py"]
   storage:
     type: hostPath
     extraVolumes:
