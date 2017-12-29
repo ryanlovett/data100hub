@@ -49,6 +49,10 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
+  lifecycleHooks:
+    postStart:
+      exec:
+        command: ["/bin/sh", "-c", "test -f $HOME/.nbgrader_config.py.lck || cp -p /srv/nbgrader/nbgrader_config.py $HOME/.nbgrader_config.py"]
   storage:
     type: hostPath
     extraVolumes:
