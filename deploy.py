@@ -11,16 +11,15 @@ import logging
 import os
 import subprocess
 import sys
-import tempfile
 import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 def tag_fragment_file(tag):
     tag_fragment = yaml.dump({'singleuser': {'image': {'tag': tag}}})
-    (f, filename) = tempfile.mkstemp(suffix='.yml')
-    f.write(tag_fragment)
-    f.close()
+    filename = '/tmp/tag-{}.yaml'.format(tag)
+    with open(filename, 'w') as f:
+        f.write(tag_fragment)
     return filename
 
 def git(*args, **kwargs):
