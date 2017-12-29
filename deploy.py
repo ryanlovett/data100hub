@@ -15,6 +15,13 @@ import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+def tag_fragment_file(tag):
+    tag_fragment = yaml.dump({'singleuser': {'image': {'tag': tag}}})
+    filename = '/tmp/tag-{}.yaml'.format(tag)
+    with open(filename, 'w') as f:
+        f.write(tag_fragment)
+    return filename
+
 def git(*args, **kwargs):
     return subprocess.check_output(['git'] + list(args))
 
@@ -82,6 +89,10 @@ def deploy(release):
 
     singleuser_tag = last_git_modified('user-image')
 
+    # We can't use --set because helm converts numeric values to float64
+    # https://github.com/kubernetes/helm/issues/1707
+    tagfilename = tag_fragment_file(singleuser_tag)
+
     with open('hub/config.yaml') as f:
         config = yaml.safe_load(f)
 
@@ -90,8 +101,9 @@ def deploy(release):
         '--version', config['version'],
         '-f', 'hub/config.yaml',
         '-f', os.path.join('hub', 'secrets', release + '.yaml'),
-        '--timeout', '3600',
-        '--set', 'singleuser.image.tag={}'.format(singleuser_tag)
+        '-f', tagfilename,
+        '--timeout', '3600'
+        #'--set', 'singleuser.image.tag={}'.format(singleuser_tag)
     )
 
 
