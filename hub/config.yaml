@@ -15,6 +15,11 @@ hub:
     from tornado import gen
     import yaml
 
+    # Resolve instructors to one account; eases nbgrader configuration
+    c.Authenticator.username_map = {}
+    for user in ["rylo", "yuvipanda", "fernando.perez", "jegonzal", "bjiang", "do", "jake_soloff", "nhiquach"]:
+        c.Authenticator.username_map[user] = 'instructor'
+
     class CustomKubeSpawner(KubeSpawner):
       @gen.coroutine
       def start(self):
@@ -49,10 +54,10 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
-  lifecycleHooks:
-    postStart:
-      exec:
-        command: ["/bin/bash", "/srv/nbgrader/post-start.sh"]
+  #lifecycleHooks:
+  #  postStart:
+  #    exec:
+  #      command: ["/bin/bash", "/srv/nbgrader/post-start.sh"]
   storage:
     type: hostPath
     extraVolumes:
