@@ -16,9 +16,16 @@ hub:
     import yaml
 
     # Resolve instructors to one account; eases nbgrader configuration
-    c.Authenticator.username_map = {}
-    for user in ["rylo", "yuvipanda", "fernando.perez", "jegonzal", "bjiang", "do", "jake_soloff", "nhiquach"]:
-        c.Authenticator.username_map[user] = 'instructor'
+    c.Authenticator.username_map = {
+        "rylo": "instructor",
+        "yuvipanda": "instructor",
+        "fernando.perez": "instructor",
+        "jegonzal": "instructor",
+        "bjiang": "instructor",
+        "do": "instructor",
+        "jake_soloff": "instructor",
+        "nhiquach": "instructor"
+    }
 
     class CustomKubeSpawner(KubeSpawner):
       @gen.coroutine
