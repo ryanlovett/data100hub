@@ -25,7 +25,8 @@ hub:
         "bjiang": "instructor",
         "do": "instructor",
         "jake_soloff": "instructor",
-        "nhiquach": "instructor"
+        "nhiquach": "instructor",
+        "louis.remus": "instructor"
     }
 
     class CustomKubeSpawner(KubeSpawner):
