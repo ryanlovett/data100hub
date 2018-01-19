@@ -67,6 +67,9 @@ function deploy {
     git-crypt unlock git-crypt.key
 
     # we are on azure
+    if [ "$TRAVIS_BRANCH" == "prod" ]; then
+        AZ_LOCATION=westus2
+    fi
     export KUBECONFIG="${TRAVIS_BUILD_DIR}/hub/secrets/kc-${TRAVIS_BRANCH}.${AZ_LOCATION}.json"
     prepare_azure
 
