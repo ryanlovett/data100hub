@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 
 ENV CONDA_PREFIX /srv/conda
 ENV PATH ${CONDA_PREFIX}/bin:$PATH
@@ -61,7 +61,7 @@ RUN jupyter nbextension install --sys-prefix --py nbgrader
 RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
-RUN pip install jupyterlab==0.31.0rc1
+RUN pip install jupyterlab==0.31.1
 RUN jupyter serverextension enable --sys-prefix --py jupyterlab
 
 RUN pip install psycopg2==2.7.3.2

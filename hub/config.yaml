@@ -61,10 +61,6 @@ singleuser:
     limit: 2G
   image:
     name: "berkeleydsep/singleuser-data100"
-  #lifecycleHooks:
-  #  postStart:
-  #    exec:
-  #      command: ["/bin/bash", "/srv/nbgrader/post-start.sh"]
   storage:
     type: hostPath
     extraVolumes:
