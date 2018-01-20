@@ -9,7 +9,7 @@ dependencies:
 - cryptography=2.1.4
 - cycler=0.10.0
 - dask=0.16.1
-- decorator=4.1.2
+- decorator=4.2.1
 - entrypoints=0.2.3
 - expat=2.2.5
 - gettext=0.19.8.1
@@ -33,7 +33,7 @@ dependencies:
 - nbformat=4.4.0
 - ncurses=6.0
 - networkx=2.0
-- notebook=5.2.2
+- notebook=5.3.1
 - numpy=1.12.1
 - pandas=0.22
 - pandoc=1.19.2.1
@@ -76,6 +76,7 @@ dependencies:
 - pip:
   - colorlover==0.2.1
   - cufflinks==0.12.1
+  - jupyterlab==0.31.1
   - oauthlib==2.0.6
   - requests-oauthlib==0.8.0
   - tweepy==3.5.0
