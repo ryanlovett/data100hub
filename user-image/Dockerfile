@@ -66,6 +66,9 @@ RUN jupyter serverextension enable --sys-prefix --py jupyterlab
 
 RUN pip install psycopg2==2.7.3.2
 
+RUN pip install nbserverproxy==0.5.0
+RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
+
 # Useful for debugging any issues with conda
 RUN conda info -a
 
